@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NDS Voices</title>
+    <style>
+        /* 모던하고 차분한 컬러 팔레트 */
+        :root {
+            --bg-color: #f4f4f5; /* 아주 밝은 웜그레이 */
+            --text-main: #18181b; /* 딥 차콜 */
+            --text-sub: #52525b; /* 중간 톤 그레이 */
+            --border-color: #e4e4e7;
+            --white: #ffffff;
+            
+            /* 버튼 배경 컬러 (NDS 포인트 & 차분한 서브 컬러) */
+            --color-ideas: #FFE600; /* NDS 포인트 옐로우 (필요시 헥스 코드 수정) */
+            --color-concerns: #6d85f7; /* 서브 메인: 차분한 더스티 블루 */
+            --color-general: #E4E4E7; /* 튀지 않는 베이직 그레이 */
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 90%;
+            padding: 40px 0;
+        }
+
+        /* 큼직한 상단 타이틀 및 설명 */
+        .header {
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 0 0 15px 0;
+        }
+
+        .header p.intro {
+            font-size: 1.15rem;
+            color: var(--text-sub);
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 650px;
+            margin: 0 0 20px 0;
+        }
+
+        .header p.notice {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            font-weight: 400;
+            display: inline-block;
+            background: #e4e4e7;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin: 0;
+        }
+
+        /* 가로형 버튼 레이아웃 */
+        .buttons-wrapper {
+            display: flex;
+            gap: 20px;
+            flex-direction: row;
+        }
+
+        .category-btn {
+            flex: 1;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 12px;
+            padding: 50px 25px; 
+            min-height: 220px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        /* 개별 버튼 컬러 적용 */
+        .btn-ideas { background-color: var(--color-ideas); }
+        .btn-concerns { background-color: var(--color-concerns); }
+        .btn-general { background-color: var(--color-general); }
+
+        /* 힙한 느낌의 호버(마우스 오버) 효과: 흑백 반전 */
+        .category-btn:hover {
+            background-color: var(--text-main);
+            border-color: var(--text-main);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .category-btn:hover .btn-main,
+        .category-btn:hover .btn-sub {
+            color: var(--white);
+        }
+
+        .btn-main {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            transition: color 0.3s ease;
+        }
+
+        .btn-sub {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            font-weight: 400;
+            line-height: 1.4;
+            transition: color 0.3s ease;
+        }
+
+        /* 입력 폼 섹션 */
+        #form-section {
+            display: none;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        #category-title {
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-family: inherit;
+            resize: none;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            background-color: var(--bg-color);
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--text-main);
+            background-color: var(--white);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-submit, .btn-back {
+            padding: 16px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-submit {
+            background-color: var(--text-main);
+            color: var(--white);
+            flex: 3;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .btn-back {
+            background-color: var(--border-color);
+            color: var(--text-main);
+            flex: 1;
+        }
+
+        .btn-back:hover {
+            background-color: #d4d4d8;
+        }
+
+        #success-message {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        #success-message h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .buttons-wrapper {
+                flex-direction: column;
+            }
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            .category-btn {
+                min-height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 메인 화면 -->
+    <div id="main-section">
+        <div class="header">
+            <h1>NDS Voices</h1>
+            <p class="intro">A safe space to share your thoughts. Whether it’s a bright idea, a quiet concern, or just something on your mind, your voice helps shape our lab for the better.</p>
+            <p class="notice">🔒 100% anonymous & goes directly to the professor</p>
+        </div>
+        
+        <div class="buttons-wrapper">
+            <button class="category-btn btn-ideas" onclick="showForm('Ideas')">
+                <span class="btn-main">Ideas</span>
+                <span class="btn-sub">Hopes, suggestions, and positive changes</span>
+            </button>
+            <button class="category-btn btn-concerns" onclick="showForm('Concerns')">
+                <span class="btn-main">Concerns</span>
+                <span class="btn-sub">Worries, difficulties, and things to fix</span>
+            </button>
+            <button class="category-btn btn-general" onclick="showForm('General')">
+                <span class="btn-main">General</span>
+                <span class="btn-sub">Anything else on your mind</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 내용 입력 화면 -->
+    <div id="form-section">
+        <h2 id="category-title"></h2>
+        <form id="suggestion-form">
+            <textarea id="message" placeholder="Type your thoughts here safely and anonymously..." required></textarea>
+            <div class="action-buttons">
+                <button type="button" class="btn-back" onclick="goBack()">Back</button>
+                <button type="submit" class="btn-submit" id="submit-btn">Send Anonymously</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 제출 완료 화면 -->
+    <div id="success-message">
+        <h2>Thank you.</h2>
+        <p style="font-size: 1.1rem; color: #71717a; margin-bottom: 30px;">Your voice has been safely delivered.</p>
+        <button class="btn-back" onclick="resetApp()">Return to Home</button>
+    </div>
+</div>
+
+<script>
+    let selectedCategory = '';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzDrElzDOyBYMSTfRP49UuB6nsA_iMrqGO2R3WJYjCcnltzQ_Ll_vVCIjzEJ1Xok1Od/exec';
+
+    function showForm(category) {
+        selectedCategory = category;
+        document.getElementById('main-section').style.display = 'none';
+        document.getElementById('form-section').style.display = 'block';
+        
+        document.getElementById('category-title').innerText = category;
+        document.getElementById('message').focus();
+    }
+
+    function goBack() {
+        document.getElementById('form-section').style.display = 'none';
+        document.getElementById('main-section').style.display = 'block';
+        document.getElementById('message').value = '';
+    }
+
+    function resetApp() {
+        document.getElementById('success-message').style.display = 'none';
+        document.getElementById('main-section').style.display = 'block';
+        document.getElementById('message').value = '';
+    }
+
+    document.getElementById('suggestion-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const messageInput = document.getElementById('message').value;
+        const submitBtn = document.getElementById('submit-btn');
+        
+        submitBtn.innerText = 'Sending...';
+        submitBtn.disabled = true;
+
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'category': selectedCategory,
+                'message': messageInput
+            })
+        }).then(() => {
+            document.getElementById('form-section').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+            submitBtn.innerText = 'Send Anonymously';
+            submitBtn.disabled = false;
+        }).catch(error => {
+            alert('Error occurred. Please try again.');
+            submitBtn.innerText = 'Send Anonymously';
+            submitBtn.disabled = false;
+        });
+    });
+</script>
+
+</body>
+</html>
